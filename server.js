@@ -22,6 +22,9 @@ app.post('/render', async (req, res) => {
     const expectedAuth =
       'Bearer ' + process.env.WORKER_SECRET;
 
+    console.log('AUTH RECEIVED:', auth);
+    console.log('EXPECTED AUTH:', expectedAuth);
+
     if (auth !== expectedAuth) {
       return res.status(401).json({
         error: 'Unauthorized'
@@ -38,9 +41,13 @@ app.post('/render', async (req, res) => {
 
     browser = await puppeteer.launch({
       headless: true,
+      executablePath:
+        process.env.PUPPETEER_EXECUTABLE_PATH ||
+        '/opt/render/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
       args: [
         '--no-sandbox',
-        '--disable-setuid-sandbox'
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage'
       ]
     });
 
@@ -107,5 +114,5 @@ app.post('/render', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log('PDF Worker running on port ' + PORT); 
-  });
+  console.log('PDF Worker running on port ' + PORT);
+});
