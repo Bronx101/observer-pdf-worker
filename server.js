@@ -31,7 +31,7 @@ app.post('/render', async (req, res) => {
       });
     }
 
-    const units = req.body.units;
+    const { units } = req.body;
 
     if (!units || !units.length) {
       return res.status(400).json({
@@ -41,13 +41,9 @@ app.post('/render', async (req, res) => {
 
     browser = await puppeteer.launch({
       headless: true,
-      executablePath:
-        process.env.PUPPETEER_EXECUTABLE_PATH ||
-        '/opt/render/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
       args: [
         '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage'
+        '--disable-setuid-sandbox'
       ]
     });
 
@@ -73,7 +69,9 @@ app.post('/render', async (req, res) => {
     });
 
     await page.waitForFunction(() => {
-      return document.documentElement.getAttribute('data-ready') === 'true';
+      return (
+        document.documentElement.getAttribute('data-ready') === 'true'
+      );
     }, {
       timeout: 120000
     });
