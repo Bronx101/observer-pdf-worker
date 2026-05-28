@@ -20,7 +20,10 @@ app.post('/render', async (req, res) => {
   try {
     const auth = req.headers.authorization;
 
-    if (auth !== `Bearer ${process.env.WORKER_SECRET}`) {
+    const expectedAuth =
+      'Bearer ' + process.env.WORKER_SECRET;
+
+    if (auth !== expectedAuth) {
       return res.status(401).json({
         error: 'Unauthorized'
       });
@@ -51,10 +54,10 @@ app.post('/render', async (req, res) => {
     });
 
     const reportUrl =
-      `https://rh-prp.com/ObserverReportView` +
-      `?units=${units.join(',')}` +
-      `&print=1` +
-      `&renderAll=1`;
+      'https://rh-prp.com/ObserverReportView' +
+      '?units=' + units.join(',') +
+      '&print=1' +
+      '&renderAll=1';
 
     console.log('Opening:', reportUrl);
 
@@ -84,7 +87,8 @@ app.post('/render', async (req, res) => {
 
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename=observer-report.pdf'
+      'Content-Disposition':
+        'inline; filename=observer-report.pdf'
     });
 
     res.send(pdf);
@@ -106,6 +110,8 @@ app.post('/render', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`PDF Worker running on port ${PORT}`);
+  console.log(
+    `PDF Worker running on port ${PORT}`
+  );
 });
 ```
