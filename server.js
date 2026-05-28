@@ -38,7 +38,7 @@ app.post('/render', async (req, res) => {
     }
 
     browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox'
@@ -107,12 +107,9 @@ app.post('/render', async (req, res) => {
   }
 });
 
-```javascript id="ebh1n5"
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(
-    'PDF Worker running on port ' + PORT
-  );
+  console.log('PDF Worker running on port ' + PORT);
 });
 ```
