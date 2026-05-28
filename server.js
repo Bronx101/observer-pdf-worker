@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const puppeteer = require('puppeteer');
 
+process.env.PUPPETEER_CACHE_DIR = '/opt/render/project/.cache/puppeteer';
+
 const app = express();
 
 app.use(express.json({ limit: '10mb' }));
