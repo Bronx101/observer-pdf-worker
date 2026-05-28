@@ -28,7 +28,7 @@ app.post('/render', async (req, res) => {
       });
     }
 
-    const { units } = req.body;
+    const units = req.body.units;
 
     if (!units || !units.length) {
       return res.status(400).json({
@@ -66,9 +66,7 @@ app.post('/render', async (req, res) => {
     });
 
     await page.waitForFunction(() => {
-      return (
-        document.documentElement.getAttribute('data-ready') === 'true'
-      );
+      return document.documentElement.getAttribute('data-ready') === 'true';
     }, {
       timeout: 120000
     });
@@ -109,6 +107,7 @@ app.post('/render', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log('PDF Worker running on port ' + PORT);
+  console.log('PDF Worker running on port ' + PORT); 
+  });
 });
 ```
