@@ -107,11 +107,12 @@ app.post('/render', async (req, res) => {
   }
 });
 
+```javascript id="ebh1n5"
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(
-    `PDF Worker running on port ${PORT}`
+    'PDF Worker running on port ' + PORT
   );
 });
 ```
