@@ -67,7 +67,7 @@ app.post('/render', async (req, res) => {
     console.log('Opening:', reportUrl);
 
     await page.goto(reportUrl, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
       timeout: 120000
     });
 
@@ -76,12 +76,15 @@ app.post('/render', async (req, res) => {
         document.documentElement.getAttribute('data-ready') === 'true'
       );
     }, {
-      timeout: 120000
+      timeout: 300000
     });
+
+    console.log('REPORT READY');
 
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
+      preferCSSPageSize: true,
       margin: {
         top: '8mm',
         right: '8mm',
@@ -89,6 +92,8 @@ app.post('/render', async (req, res) => {
         left: '8mm'
       }
     });
+
+    console.log('PDF GENERATED');
 
     res.set({
       'Content-Type': 'application/pdf',
